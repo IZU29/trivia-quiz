@@ -3,9 +3,9 @@ import Option from './Option'
 import { nanoid } from 'nanoid'
 export default function Quiz(props) {
     const [state , setState] = React.useState(false)
-    const [count , setCount] = React.useState(0)
+    const [count , setCount] = React.useState()
     const [question, setQuestion] = React.useState(...Options())
-   
+    const [score , setScore] = React.useState([])
     function Options() {
         const NewArr = [
             props.quiz.map(opt => ({
@@ -16,9 +16,17 @@ export default function Quiz(props) {
       
         return NewArr 
     }
-    
-   
-   
+    function scored(){
+       return question.map(item => ({
+        question: item.question,
+        id: item.id,
+        answer: item.answer.filter(items => items.correct == true && items.held == true)
+       }))
+    }
+    // function count(){ 
+    //    score.filter(item => item.answer.length > 0)
+    // }
+    // state ? console.log(count()) : console.log('bread')
     function holdOption(questionId , id) {
         setQuestion(prev => prev.map(
             (old) => {
@@ -40,7 +48,7 @@ export default function Quiz(props) {
                     (prev) => {
                         
                         if(id === prev.id){
-                            return { ...prev, held: true }
+                            return { ...prev, held: true  }
                         }
                         else{
                             return  { ...prev, held:  prev.held }
@@ -51,15 +59,17 @@ export default function Quiz(props) {
         }
             }
         ))
-           
+       setScore(question.map(item => (item.answer)))
     }
-    function Add(){
-        setCount( prev => prev + 1)
-    }
+   
+    
+   
     function submit(){
         setState( prev => !prev)
+        console.log(score.map(list => list.find(item => item.correct == true && item.held == true)))
+        
     }
-
+    
 
     const eachQuestion = question.map(prevQuestion => (
         <div className="question-box" key={prevQuestion.id}>
@@ -72,17 +82,18 @@ export default function Quiz(props) {
                 held={prev.held}
                 state={state}
                 correct = {prev.correct}
-                add = {Add}
+                
             />))}</div>
             <hr></hr>
         </div>
     )
     )
+    
     return (
         
         <div className="quiz-box">
             {eachQuestion}
-            {!state ? <button className="submit" onClick={() => submit()}>Submit</button> : `You have finished this Quiz`}
+            {!state ? <button className="submit" onClick={() => submit()}>Submit</button> : `You have finished this quiz `}
         </div>
         
     )

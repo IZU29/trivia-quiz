@@ -19,6 +19,6 @@ export default function Option(props){
     }
    
 return(
-    <button className="option-box" onClick={!props.state ? props.holdOption : ''} style={{backgroundColor : props.held ? submit() : (props.correct && props.state? '#94D7A2' : '' )}}>{props.answer}</button>
+    <button className="option-box" onClick={!props.state ? props.holdOption : null} style={{backgroundColor : props.held ? submit() : (props.correct && props.state? '#94D7A2' : '' )}}>{props.answer}</button>
 )
 }
